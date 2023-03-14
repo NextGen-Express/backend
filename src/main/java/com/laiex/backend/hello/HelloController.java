@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
+//This is from conflict reference
+
 @RestController
 public class HelloController {
     @GetMapping("/hello")
