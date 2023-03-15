@@ -8,5 +8,8 @@ spring:
 
 logging:
   level:
+    org.springframework.jdbc.core: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
     org.apache.coyote.http11.Http11InputBuffer: DEBUG
+
 
