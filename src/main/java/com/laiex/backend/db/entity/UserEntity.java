@@ -1,5 +1,6 @@
 package com.laiex.backend.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -8,8 +9,8 @@ public record UserEntity(
         @Id Long id,
         String username,
         String password,
-        String first_name,
-        String last_name,
-        Integer phone_number
+        @JsonProperty("first_name") String firstName,
+        @JsonProperty("last_name") String lastName,
+        Integer phone
 ) {
 }
