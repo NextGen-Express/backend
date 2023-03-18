@@ -7,10 +7,10 @@ CREATE TABLE users
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     password VARCHAR(100) NOT NULL,
-    phone VARCHAR(15)
+    phone VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE stations
@@ -26,10 +26,10 @@ CREATE TABLE stations
 CREATE TABLE carriers
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    shipping ENUM('ground', 'air') NOT NULL,
+    shipping_method ENUM('ground', 'air') NOT NULL,
     burden INT NOT NULL,
     capacity INT NOT NULL,
-    battery INT NOT NULL
+    battery INT
 );
 
 CREATE TABLE orders
