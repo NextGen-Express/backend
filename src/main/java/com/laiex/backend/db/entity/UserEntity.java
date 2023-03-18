@@ -1,6 +1,7 @@
 package com.laiex.backend.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -14,4 +15,8 @@ public record UserEntity(
         @JsonProperty("phone_number") Integer phoneNumber
 
 ) {
+    //get this user id
+    public long getId() {
+        return id;
+    }
 }
