@@ -19,8 +19,8 @@ CREATE TABLE stations
     city VARCHAR(50) NOT NULL,
     address VARCHAR(255) NOT NULL,
     status ENUM('unavailable', 'available') NOT NULL,
-    latitude VARCHAR(10) NOT NULL,
-    longitude VARCHAR(10) NOT NULL
+    latitude FLOAT NOT NULL,
+    longitude FLOAT NOT NULL
 );
 
 CREATE TABLE carriers
