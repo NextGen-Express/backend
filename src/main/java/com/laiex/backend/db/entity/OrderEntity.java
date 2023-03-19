@@ -1,7 +1,9 @@
 package com.laiex.backend.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.springframework.cglib.core.Local;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -22,4 +24,6 @@ public record OrderEntity(
 
 
 ) {
+
 }
+
