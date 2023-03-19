@@ -1,4 +1,9 @@
 spring:
+  sql:
+    init:
+      mode: ${INIT_DB:always}
+      schema-locations: "classpath:database-init.sql"
+
   datasource:
     url: jdbc:mysql://${DATABASE_URL:localhost}:3306/laiex?createDatabaseIfNotExist=true
     username: ${DATABASE_USERNAME:root}
