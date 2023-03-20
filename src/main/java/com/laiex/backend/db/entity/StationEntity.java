@@ -6,11 +6,10 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("stations")
 public record StationEntity(
         @Id Long id,
-        String address,
         String city,
-        String country,
-        Float latitude,
-        Float longitude,
+        String address,
+        Double latitude,
+        Double longitude,
         String status
 ) {
 }

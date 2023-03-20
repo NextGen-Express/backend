@@ -14,7 +14,6 @@ public record UserEntity(
         @JsonProperty("first_name") String firstName,
         @JsonProperty("last_name") String lastName,
         @JsonProperty("phone_number") Integer phoneNumber
-        Integer phone
 ) {
     //get this user id
     public long getId() {
