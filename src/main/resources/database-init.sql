@@ -7,10 +7,10 @@ CREATE TABLE users
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    phone VARCHAR(15) NOT NULL
+    phone_number VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE stations
@@ -18,15 +18,15 @@ CREATE TABLE stations
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     city VARCHAR(50) NOT NULL,
     address VARCHAR(255) NOT NULL,
-    status ENUM('unavailable', 'available') NOT NULL,
-    latitude FLOAT NOT NULL,
-    longitude FLOAT NOT NULL
+    latitude DOUBLE NOT NULL,
+    longitude DOUBLE NOT NULL,
+    status ENUM('unavailable', 'available')
 );
 
 CREATE TABLE carriers
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    shipping_method ENUM('ground', 'air') NOT NULL,
+    shipping_method ENUM('RobotCar', 'UAV') NOT NULL,
     burden INT NOT NULL,
     capacity INT NOT NULL,
     battery INT
@@ -35,15 +35,15 @@ CREATE TABLE carriers
 CREATE TABLE orders
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    carrier_id INT NOT NULL,
     user_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (carrier_id) REFERENCES carriers(id) ON DELETE CASCADE,
+    order_time DATETIME NOT NULL,
+    estimated_pick_time DATETIME NOT NULL,
+    estimated_delivery_time DATETIME NOT NULL,
     pickup_addr VARCHAR(255) NOT NULL,
     delivery_addr VARCHAR(255) NOT NULL,
-    order_time DATETIME NOT NULL,
-    estimated_pickup_time DATETIME NOT NULL,
-    estimated_delivery_time DATETIME NOT NULL,
-    price FLOAT,
+    carrier_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (carrier_id) REFERENCES carriers(id) ON DELETE CASCADE,
+    price FLOAT NOT NULL ,
     status ENUM('ordered', 'pickedup', 'delivered', 'reviewed') NOT NULL
 );
