@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'com.stripe:stripe-java:22.13.0'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'com.github.javafaker:javafaker:1.0.2'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -21,6 +22,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'com.stripe:stripe-java:20.13.0'
 }
 
 tasks.named('test') {

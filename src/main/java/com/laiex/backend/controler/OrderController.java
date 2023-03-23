@@ -1,31 +1,31 @@
 package com.laiex.backend.controler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.laiex.backend.db.OrderRepository;
 import com.laiex.backend.db.entity.OrderEntity;
 import com.laiex.backend.model.BookRequestBody;
-import com.laiex.backend.service.BookService;
-import com.laiex.backend.service.UserService;
+import com.laiex.backend.service.OrderService;
+import com.laiex.backend.service.StripeService;
+import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.time.LocalTime;
+import java.util.List;
 
 @RestController
-public class BookController {
-    private final BookService bookService;
+public class OrderController {
+    private final OrderService orderService;
+    private final StripeService stripeService;
 
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
+    public OrderController(OrderService orderService, StripeService stripeService) {
+        this.orderService = orderService;
+        this.stripeService = stripeService;
     }
 
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
-    public void book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) {
+    public void book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException {
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
         Long userId = bookRequestBody.userId();
 
@@ -45,8 +45,11 @@ public class BookController {
 
         OrderEntity.status status = bookRequestBody.status();
 
-        bookService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status);
+        orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status);
 
+//        String priceId = stripeService.StripOrderGenerator();
+//        System.out.println("priceid is " + priceId);
 
     }
+
 }

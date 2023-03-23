@@ -4,12 +4,18 @@ import com.laiex.backend.db.CarrierRepository;
 import com.laiex.backend.db.OrderRepository;
 import com.laiex.backend.db.StationRepository;
 import com.laiex.backend.db.UserRepository;
+import com.laiex.backend.db.entity.CarrierEntity;
+import com.laiex.backend.db.entity.OrderEntity;
+import com.laiex.backend.service.OrderService;
+import com.laiex.backend.service.StripeService;
 import com.laiex.backend.service.UserService;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalTime;
 
 
 @Component
@@ -21,13 +27,17 @@ public class DevelopmentTester implements ApplicationRunner {
     private final StationRepository stationRepository;
     private final OrderRepository orderRepository;
     private final UserService userService;
+    private final OrderService orderService;
+    private final StripeService stripeService;
 
-    public DevelopmentTester(UserRepository userRepository, CarrierRepository carrierRepository, StationRepository stationRepository, OrderRepository orderRepository, UserService userService) {
+    public DevelopmentTester(UserRepository userRepository, CarrierRepository carrierRepository, StationRepository stationRepository, OrderRepository orderRepository, UserService userService, OrderService orderService, OrderService orderService1, StripeService stripeService) {
         this.userRepository = userRepository;
         this.carrierRepository = carrierRepository;
         this.stationRepository = stationRepository;
         this.orderRepository = orderRepository;
         this.userService = userService;
+        this.orderService = orderService1;
+        this.stripeService = stripeService;
     }
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -38,9 +48,9 @@ public class DevelopmentTester implements ApplicationRunner {
 //        UserEntity user2 = new UserEntity(null,"test2@gmail.com", "123","john", "z",1231233213);
 //        userRepository.save(user2);
 //
-//        // CarrierEntity test
-//        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
-//        carrierRepository.save(carrier1);
+        // CarrierEntity test
+        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
+        carrierRepository.save(carrier1);
 //
 //        CarrierEntity carrier2 = new CarrierEntity(null, CarrierEntity.CarrierType.UAV, 0, 500, Integer.MAX_VALUE);
 //        carrierRepository.save(carrier2);
@@ -58,5 +68,19 @@ public class DevelopmentTester implements ApplicationRunner {
 
         //register tester
         userService.register("abc@gmail.com", "123", "john","z",1231233213);
+
+
+        // stripe product generator test
+        String productId = stripeService.createRide();
+        stripeService.attachPriceToProductId(105.49, productId);
+        stripeService.stripOrderGenerator(productId);
+
+        // book tester
+        orderService.placeOrder(1L, LocalTime.parse("10:30:15.500"), LocalTime.parse("10:30:15.500"), LocalTime.parse("10:30:15.500"),
+                "1600 Holloway Ave, San Francisco, CA 94132", "450 10th St, San Francisco, CA 94103",
+                1L, 150.5, OrderEntity.status.ordered);
+
+
+
     }
 }

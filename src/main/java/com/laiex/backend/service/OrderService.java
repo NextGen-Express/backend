@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 
 @Service
-public class BookService {
+public class OrderService {
     private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
 
-    public BookService(UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder, UserRepository userRepository, OrderRepository orderRepository) {
+    public OrderService(UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder, UserRepository userRepository, OrderRepository orderRepository) {
         this.userDetailsManager = userDetailsManager;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
@@ -24,7 +24,4 @@ public class BookService {
     }
 
 
-    public void placeOrder(Long userId, LocalTime orderTime, LocalTime estimatedPickTime, LocalTime estimatedDeliveryTime, String pickupAddr, String deliveryAddr, Long carrierId, Double price, OrderEntity.status status) {
-        orderRepository.insertNewOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr,deliveryAddr,carrierId, price, status);
-    }
 }
