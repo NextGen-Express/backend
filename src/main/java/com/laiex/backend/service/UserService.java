@@ -26,9 +26,9 @@ public class UserService {
         this.orderRepository = orderRepository;
     }
 
-    public void register(String username, String password, String firstName, String lastName, Integer phoneNumber)  {
+    public void register(String username, String password, String firstName, String lastName, String phoneNumber) {
         // Check if the username already exists in the database
-        userRepository.findIdByUsername(username);
+        // userRepository.findIdByUsername(username);
         UserDetails user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
