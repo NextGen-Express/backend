@@ -31,7 +31,7 @@ public class StripeService {
 
     }
 
-    public String createRide() {
+    public String createRide(String rideName) {
         Map<String, Object> params = new HashMap<>();
         params.put("name", "Gold Special");
         Product product = null;
@@ -45,11 +45,11 @@ public class StripeService {
     }
 
 
-    public void attachPriceToProductId(double v, String productId) {
+    public void attachPriceToProductId(double cost, String productId) {
         Map<String, Object> recurring = new HashMap<>();
         recurring.put("interval", "month");
         Map<String, Object> params = new HashMap<>();
-        params.put("unit_amount", 2000);
+        params.put("unit_amount", (int) (cost * 100));
         params.put("currency", "usd");
         params.put("recurring", recurring);
         params.put("product", "prod_NVYNC0xmxzmB2Y");

@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -25,15 +26,15 @@ public class OrderController {
 
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
-    public void book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException {
+    public void book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
         Long userId = bookRequestBody.userId();
 
-        LocalTime orderTime = bookRequestBody.orderTime();
+        LocalDateTime orderTime = bookRequestBody.orderTime();
 
-        LocalTime estimatedPickTime = bookRequestBody.estimatedPickTime();
+        LocalDateTime estimatedPickTime = bookRequestBody.estimatedPickTime();
 
-        LocalTime estimatedDeliveryTime = bookRequestBody.estimatedDeliveryTime();
+        LocalDateTime estimatedDeliveryTime = bookRequestBody.estimatedDeliveryTime();
 
         String pickupAddr = bookRequestBody.pickupAddr();
 
@@ -45,10 +46,14 @@ public class OrderController {
 
         OrderEntity.status status = bookRequestBody.status();
 
-        orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status);
+        // creat productId on Stripe
+        String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
+        // attach price to above ride
+        stripeService.attachPriceToProductId(price, stripeProductId);
+        // store order to mySQL
+        orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status, stripeProductId);
 
-//        String priceId = stripeService.StripOrderGenerator();
-//        System.out.println("priceid is " + priceId);
+
 
     }
 
