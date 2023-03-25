@@ -7,6 +7,7 @@ import org.springframework.data.repository.ListCrudRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
     @Modifying
@@ -18,4 +19,16 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
     @Query("SELECT id FROM orders WHERE user_id = :userId AND order_time = :orderTime")
 
     Long getOrderIdByUserIdAndOrderTime(Long userId, LocalDateTime orderTime);
+
+    @Query("SELECT * FROM orders\n" +
+            "WHERE user_id = :userId\n" +
+            "ORDER BY\n" +
+            "  CASE status\n" +
+            "    WHEN 'ordered' THEN 1\n" +
+            "    WHEN 'pickup' THEN 2\n" +
+            "    WHEN 'delivered' THEN 3\n" +
+            "    WHEN 'reviewed' THEN 4\n" +
+            "    ELSE 5\n" +
+            "  END ASC, order_time DESC;")
+    List<OrderEntity> findByUserIdNewestToOldest(Long userId);
 }
