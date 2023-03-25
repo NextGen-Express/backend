@@ -8,6 +8,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -23,5 +24,9 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-
+    //newly added unsure
+    public List<OrderEntity> getOrderHistory(Long userId) {
+        // return orderRepository.findByUserId(userId);
+        return orderRepository.findByUserIdNewestToOldest(userId);
+    }  
 }

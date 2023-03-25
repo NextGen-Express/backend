@@ -44,4 +44,10 @@ public class UserService {
         userRepository.fillOutInfoByUsername(username, firstName, lastName, phoneNumber);
     }
 
+    // newly added need comments
+    public Long findUserIdByUsername(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        return user.getId();
+    }
+
 }

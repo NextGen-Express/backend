@@ -14,14 +14,19 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
+// newly added unsure
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
     private final StripeService stripeService;
+    private final UserService userService;
 
-    public OrderController(OrderService orderService, StripeService stripeService) {
+    public OrderController(OrderService orderService, StripeService stripeService, UserService userService) {
         this.orderService = orderService;
         this.stripeService = stripeService;
+        this.userService = userService;
     }
+    
 
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
@@ -49,6 +54,15 @@ public class OrderController {
 
 //        String priceId = stripeService.StripOrderGenerator();
 //        System.out.println("priceid is " + priceId);
+
+    }
+
+    // newly added need comments
+    @GetMapping("/history")
+    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
+        Long userId = userService.findUserIdByUsername(user.getUsername());
+        return orderService.getOrderHistory(userId);
+    }
 
     }
 

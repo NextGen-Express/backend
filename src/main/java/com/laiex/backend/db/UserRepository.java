@@ -10,4 +10,6 @@ public interface UserRepository extends ListCrudRepository<UserEntity, Long> {
     @Modifying
     @Query("UPDATE users SET first_name = :firstName, last_name = :lastName, phone_number = :phoneNumber")
     void fillOutInfoByUsername(String username, String firstName, String lastName, Integer phoneNumber);
+    // newly added need comment
+    UserEntity findByUsername(String username);
 }
