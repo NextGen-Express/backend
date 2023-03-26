@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/home")
 public class OrderController {
     private final OrderService orderService;
     private final StripeService stripeService;
@@ -31,9 +31,10 @@ public class OrderController {
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
     public RedirectView book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
+        System.out.println("I'm booking new order");
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
-        Long userId = bookRequestBody.userId();
-
+        Long userId = userService.findUserIdByUsername(user.getUsername());
+        System.out.println("user id is " + userId);
         LocalDateTime orderTime = bookRequestBody.orderTime();
 
         LocalDateTime estimatedPickTime = bookRequestBody.estimatedPickTime();
@@ -48,7 +49,7 @@ public class OrderController {
 
         Double price = bookRequestBody.price();
 
-        OrderEntity.status status = bookRequestBody.status();
+        OrderEntity.status status = OrderEntity.status.ordered;
 
         // creat productId on Stripe
         String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
@@ -65,10 +66,9 @@ public class OrderController {
 
     @GetMapping("/history")
     public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
+
         Long userId = userService.findUserIdByUsername(user.getUsername());
         return orderService.getOrderHistoryByUserId(userId);
     }
-
-
 
 }
