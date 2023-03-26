@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +41,10 @@ public class OrderService{
 //        Thread.sleep(timeToDelivery);
 //        //orderRepository.updateStatus(orderId, OrderEntity.status.delivered);
 //        System.out.println(orderId + " has been delivered." );
+    }
+
+    public List<OrderEntity> getOrderHistoryByUserId(Long userId) {
+        return orderRepository.findByUserIdNewestToOldest(userId);
     }
 
 

@@ -8,7 +8,7 @@ public record RegisterBody(
         String password,
         @JsonProperty("first_name") String firstName,
         @JsonProperty("last_name") String lastName,
-        @JsonProperty("phone_number") Integer phoneNumber
+        @JsonProperty("phone_number") String phoneNumber
 ) {
 
 }
