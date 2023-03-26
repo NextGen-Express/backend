@@ -79,12 +79,12 @@ public class DevelopmentTester implements ApplicationRunner {
 
 
         // stripe product generator test
-//        String productId1 = stripeService.createRide(1 + "" + LocalTime.now());
-//        System.out.println("Product id is " + productId1);
-//        String priceId1 = stripeService.attachPriceToProductId(10549, productId1);
-//        System.out.println("Price id is " + priceId1);
-//        stripeService.stripOrderGenerator(productId1, priceId1, 50000);
-//        System.out.println("Checkout session is succeed!");
+        String productId1 = stripeService.createRide(1 + "" + LocalTime.now());
+        System.out.println("Product id is " + productId1);
+        String priceId1 = stripeService.attachPriceToProductId(10549, productId1);
+        System.out.println("Price id is " + priceId1);
+        stripeService.stripOrderGenerator(productId1, priceId1, 50000);
+        System.out.println("Checkout session is succeed!");
 //
 //        orderService.placeOrder(1L, LocalDateTime.parse("2023-03-24 10:30:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
 //                LocalDateTime.parse("2023-03-24 10:30:10",DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
