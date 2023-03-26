@@ -4,6 +4,7 @@ import com.laiex.backend.db.entity.OrderEntity;
 import com.laiex.backend.model.BookRequestBody;
 import com.laiex.backend.service.OrderService;
 import com.laiex.backend.service.StripeService;
+import com.laiex.backend.service.UserService;
 import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,17 +12,19 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
     private final StripeService stripeService;
+    private final UserService userService;
 
-    public OrderController(OrderService orderService, StripeService stripeService) {
+    public OrderController(OrderService orderService, StripeService stripeService, UserService userService) {
         this.orderService = orderService;
         this.stripeService = stripeService;
+        this.userService = userService;
     }
 
     @PostMapping("/book")
@@ -56,5 +59,13 @@ public class OrderController {
 
 
     }
+
+    @GetMapping("/history")
+    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
+        Long userId = userService.findUserIdByUsername(user.getUsername());
+        return orderService.getOrderHistoryByUserId(userId);
+    }
+
+
 
 }

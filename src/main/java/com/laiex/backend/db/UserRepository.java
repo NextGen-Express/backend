@@ -15,4 +15,6 @@ public interface UserRepository extends ListCrudRepository<UserEntity, Long> {
 
     @Query("SELECT id FROM users WHERE username = :username")
     Integer findIdByUsername(String username);
+
+    UserEntity findByUsername(String username);
 }

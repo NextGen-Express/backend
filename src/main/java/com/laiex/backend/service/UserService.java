@@ -2,6 +2,7 @@ package com.laiex.backend.service;
 
 import com.laiex.backend.db.OrderRepository;
 import com.laiex.backend.db.UserRepository;
+import com.laiex.backend.db.entity.UserEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,5 +38,12 @@ public class UserService {
         userDetailsManager.createUser(user);
         userRepository.fillOutInfoByUsername(username, firstName, lastName, phoneNumber);
     }
+
+    public Long findUserIdByUsername(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        return user.getId();
+    }
+
+
 
 }
