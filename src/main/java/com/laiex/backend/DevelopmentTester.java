@@ -60,8 +60,8 @@ public class DevelopmentTester implements ApplicationRunner {
         CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
         carrierRepository.save(carrier1);
 //
-//        CarrierEntity carrier2 = new CarrierEntity(null, CarrierEntity.CarrierType.UAV, 0, 500, Integer.MAX_VALUE);
-//        carrierRepository.save(carrier2);
+        CarrierEntity carrier2 = new CarrierEntity(null, CarrierEntity.CarrierType.UAV, 0, 500, Integer.MAX_VALUE);
+        carrierRepository.save(carrier2);
 ////
 //        //StationEntity test
 //        StationEntity station1 = new StationEntity(null, "San Francisco", "285 Olympia Way, San Francisco, CA 94131", 37.75112100170498, -122.456254888161, null);
@@ -80,8 +80,11 @@ public class DevelopmentTester implements ApplicationRunner {
 
         // stripe product generator test
 //        String productId1 = stripeService.createRide(1 + "" + LocalTime.now());
-//        stripeService.attachPriceToProductId(10549, productId1);
-//        stripeService.stripOrderGenerator(productId1);
+//        System.out.println("Product id is " + productId1);
+//        String priceId1 = stripeService.attachPriceToProductId(10549, productId1);
+//        System.out.println("Price id is " + priceId1);
+//        stripeService.stripOrderGenerator(productId1, priceId1, 50000);
+//        System.out.println("Checkout session is succeed!");
 //
 //        orderService.placeOrder(1L, LocalDateTime.parse("2023-03-24 10:30:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
 //                LocalDateTime.parse("2023-03-24 10:30:10",DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),

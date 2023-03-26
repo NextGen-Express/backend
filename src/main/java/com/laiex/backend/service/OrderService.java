@@ -29,15 +29,18 @@ public class OrderService{
         Long orderId = orderRepository.getOrderIdByUserIdAndOrderTime(userId, orderTime);
         System.out.println(orderId + " has been ordered");
 
-        // update order to picked up after estimatedPickTime is reached
-        long timeToPick = (estimatedPickTime.toLocalTime().toNanoOfDay() - orderTime.toLocalTime().toNanoOfDay()) / 1000000;
-        Thread.sleep(timeToPick);
-        System.out.println(orderId + " has been picked." );
-
-        // update order to deliver when estimatedPickTime is reached
-        long timeToDelivery = (estimatedDeliveryTime.toLocalTime().toNanoOfDay() - orderTime.toLocalTime().toNanoOfDay()) / 1000000;
-        Thread.sleep(timeToDelivery);
-        System.out.println(orderId + " has been delivered." );
+//        // update order to picked up after estimatedPickTime is reached
+//        long timeToPick = (estimatedPickTime.toLocalTime().toNanoOfDay() - orderTime.toLocalTime().toNanoOfDay()) / 1000000;
+//        System.out.println("Going to sleep " + timeToPick/1000 + " seconds");
+//        Thread.sleep(timeToPick);
+//        //orderRepository.updateStatus(orderId, OrderEntity.status.pickup);
+//        System.out.println(orderId + " has been picked." );
+//
+//        // update order to deliver when estimatedPickTime is reached
+//        long timeToDelivery = (estimatedDeliveryTime.toLocalTime().toNanoOfDay() - orderTime.toLocalTime().toNanoOfDay()) / 1000000;
+//        Thread.sleep(timeToDelivery);
+//        //orderRepository.updateStatus(orderId, OrderEntity.status.delivered);
+//        System.out.println(orderId + " has been delivered." );
     }
 
     public List<OrderEntity> getOrderHistoryByUserId(Long userId) {

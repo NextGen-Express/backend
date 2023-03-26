@@ -6,6 +6,7 @@ import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 import java.util.List;
 
@@ -17,8 +18,11 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
                         String deliveryAddr, Long carrierId, Double price, OrderEntity.status status, String stripeProductId);
 
     @Query("SELECT id FROM orders WHERE user_id = :userId AND order_time = :orderTime")
-
     Long getOrderIdByUserIdAndOrderTime(Long userId, LocalDateTime orderTime);
+
+    @Modifying
+    @Query("UPDATE orders SET status = :newStatus WHERE id = :orderId")
+    void updateStatus(Long orderId, Enum<OrderEntity.status> newStatus);
 
     @Query("SELECT * FROM orders\n" +
             "WHERE user_id = :userId\n" +

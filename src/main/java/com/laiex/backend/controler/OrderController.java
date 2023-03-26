@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +30,7 @@ public class OrderController {
 
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
-    public void book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
+    public RedirectView book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
         Long userId = bookRequestBody.userId();
 
@@ -52,11 +53,13 @@ public class OrderController {
         // creat productId on Stripe
         String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
         // attach price to above ride
-        stripeService.attachPriceToProductId(price, stripeProductId);
+        String stripePriceId = stripeService.attachPriceToProductId((int) (price * 100), stripeProductId);
         // store order to mySQL
         orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status, stripeProductId);
+        // stripe checkout session
+        String redirectUrl = stripeService.stripOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
 
-
+        return new RedirectView(redirectUrl);
 
     }
 

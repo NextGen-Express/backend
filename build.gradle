@@ -22,7 +22,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'com.stripe:stripe-java:20.13.0'
+	implementation 'com.stripe:stripe-java:22.14.0'
+	implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 tasks.named('test') {
