@@ -24,8 +24,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'com.stripe:stripe-java:22.14.0'
 	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'com.google.maps:google-maps-services:2.1.2'
+	implementation 'org.slf4j:slf4j-simple:1.7.25'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+

@@ -5,9 +5,7 @@ import com.laiex.backend.db.OrderRepository;
 import com.laiex.backend.db.StationRepository;
 import com.laiex.backend.db.UserRepository;
 import com.laiex.backend.db.entity.CarrierEntity;
-import com.laiex.backend.db.entity.OrderEntity;
-import com.laiex.backend.db.entity.StationEntity;
-import com.laiex.backend.db.entity.UserEntity;
+import com.laiex.backend.service.GoogleService;
 import com.laiex.backend.service.OrderService;
 import com.laiex.backend.service.StripeService;
 import com.laiex.backend.service.UserService;
@@ -17,10 +15,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 
 @Component
@@ -37,7 +31,9 @@ public class DevelopmentTester implements ApplicationRunner {
 
     private final PasswordEncoder passwordEncoder;
 
-    public DevelopmentTester(UserRepository userRepository, CarrierRepository carrierRepository, StationRepository stationRepository, OrderRepository orderRepository, UserService userService, OrderService orderService, OrderService orderService1, StripeService stripeService, PasswordEncoder passwordEncoder) {
+    private final GoogleService googleService;
+
+    public DevelopmentTester(UserRepository userRepository, CarrierRepository carrierRepository, StationRepository stationRepository, OrderRepository orderRepository, UserService userService, OrderService orderService, OrderService orderService1, StripeService stripeService, PasswordEncoder passwordEncoder, GoogleService googleService) {
         this.userRepository = userRepository;
         this.carrierRepository = carrierRepository;
         this.stationRepository = stationRepository;
@@ -46,6 +42,7 @@ public class DevelopmentTester implements ApplicationRunner {
         this.orderService = orderService1;
         this.stripeService = stripeService;
         this.passwordEncoder = passwordEncoder;
+        this.googleService = googleService;
     }
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -57,11 +54,12 @@ public class DevelopmentTester implements ApplicationRunner {
 //        userRepository.save(user2);
 //
         // CarrierEntity test
-        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
-        carrierRepository.save(carrier1);
-//
-        CarrierEntity carrier2 = new CarrierEntity(null, CarrierEntity.CarrierType.UAV, 0, 500, Integer.MAX_VALUE);
-        carrierRepository.save(carrier2);
+//        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
+//        carrierRepository.save(carrier1);
+////
+//        CarrierEntity carrier2 = new CarrierEntity(null, CarrierEntity.CarrierType.UAV, 0, 500, Integer.MAX_VALUE);
+//        carrierRepository.save(carrier2);
+
 ////
 //        //StationEntity test
 //        StationEntity station1 = new StationEntity(null, "San Francisco", "285 Olympia Way, San Francisco, CA 94131", 37.75112100170498, -122.456254888161, null);
@@ -79,12 +77,12 @@ public class DevelopmentTester implements ApplicationRunner {
 
 
         // stripe product generator test
-        String productId1 = stripeService.createRide(1 + "" + LocalTime.now());
-        System.out.println("Product id is " + productId1);
-        String priceId1 = stripeService.attachPriceToProductId(10549, productId1);
-        System.out.println("Price id is " + priceId1);
-        stripeService.stripOrderGenerator(productId1, priceId1, 50000);
-        System.out.println("Checkout session is succeed!");
+//        String productId1 = stripeService.createRide(1 + "" + LocalTime.now());
+//        System.out.println("Product id is " + productId1);
+//        String priceId1 = stripeService.attachPriceToProductId(10549, productId1);
+//        System.out.println("Price id is " + priceId1);
+//        stripeService.stripOrderGenerator(productId1, priceId1, 50000);
+//        System.out.println("Checkout session is succeed!");
 //
 //        orderService.placeOrder(1L, LocalDateTime.parse("2023-03-24 10:30:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
 //                LocalDateTime.parse("2023-03-24 10:30:10",DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
@@ -101,7 +99,13 @@ public class DevelopmentTester implements ApplicationRunner {
 //                "1600 Holloway Ave, San Francisco, CA 94132", "450 10th St, San Francisco, CA 94103",
 //                2L, 150.5, OrderEntity.status.ordered, productId1);
 
+        String orign = "1517 W 28th St, Los Angeles, CA 90007";
+        String destination = "651 W 35th St, Los Angeles, CA 90089";
+        System.out.println("The distance is " + googleService.calculateDistance(orign,destination));
+        System.out.println("The direction is " + googleService.getDirections(orign, destination).toString());
 
 
+        // calculate straight distance
+        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
     }
 }
