@@ -29,6 +29,7 @@ public class StripeService {
         Session session = Session.create(params);
         System.out.println(session.getUrl());
         return session.getUrl();
+
     }
 
     public String createRide(String rideName) {
