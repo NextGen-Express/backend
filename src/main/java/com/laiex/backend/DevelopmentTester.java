@@ -105,7 +105,24 @@ public class DevelopmentTester implements ApplicationRunner {
         System.out.println("The direction is " + googleService.getDirections(orign, destination).toString());
 
 
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
         // calculate straight distance
         System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+
+        // Mock Carrier entries
+        CarrierEntity carrier1 = new CarrierEntity(null, "RobotCar", 0, 1000, Integer.MAX_VALUE);
+        carrierRepository.save(carrier1);
+
+        CarrierEntity carrier2 = new CarrierEntity(null, "UAV", 0, 500, Integer.MAX_VALUE);
+        carrierRepository.save(carrier2);
+
+
+>>>>>>> Stashed changes
+=======
+        // calculate straight distance
+        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+>>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
     }
 }
