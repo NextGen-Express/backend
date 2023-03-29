@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("carriers")
 public record CarrierEntity(
         @Id Long id,
-        @JsonProperty("shipping_method") CarrierType shippingMethod,
+        @JsonProperty("shipping_method") Enum shippingMethod,
         Integer burden,
         Integer capacity,
         Integer battery
