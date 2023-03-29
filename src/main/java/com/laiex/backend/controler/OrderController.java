@@ -6,6 +6,7 @@ import com.laiex.backend.service.OrderService;
 import com.laiex.backend.service.StripeService;
 import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,11 @@ public class OrderController {
 
         Double price = bookRequestBody.price();
 
+<<<<<<< Updated upstream
         OrderEntity.status status = bookRequestBody.status();
+=======
+        OrderEntity.Status status = OrderEntity.Status.ordered;
+>>>>>>> Stashed changes
 
         orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status);
 
@@ -62,8 +67,15 @@ public class OrderController {
     public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
         Long userId = userService.findUserIdByUsername(user.getUsername());
         return orderService.getOrderHistory(userId);
+<<<<<<< Updated upstream
     }
 
+=======
+>>>>>>> Stashed changes
     }
 
+    public ResponseEntity<List<OrderEntity>> getSortedOrders(@PathVariable Long userId) {
+        List<OrderEntity> sortedOrders = orderService.getSortedOrders(userId);
+        return ResponseEntity.ok(sortedOrders);
+    }
 }

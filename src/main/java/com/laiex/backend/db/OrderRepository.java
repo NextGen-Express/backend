@@ -13,6 +13,7 @@ import java.util.List;
 public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
     
     @Modifying
+<<<<<<< Updated upstream
     @Query("INSERT INTO orders (user_id, order_time, estimated_pick_time, estimated_delivery_time, pickup_addr, delivery_addr, carrier_id, price, status) " +
             "VALUES (:userId, :orderTime, :estimatedPickTime, :estimatedDeliveryTime, :pickupAddr, :deliveryAddr, :carrierId, :price, :status)")
     void insertNewOrder(Long userId, LocalTime orderTime, LocalTime estimatedPickTime, LocalTime estimatedDeliveryTime, String pickupAddr,
@@ -29,4 +30,20 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
             "    ELSE 5\n" +
             "  END ASC, order_time DESC\n")
     List<OrderEntity> findByUserIdNewestToOldest(Long userId);
+=======
+    @Query("INSERT INTO orders (user_id, order_time, estimated_pick_time, estimated_delivery_time, pickup_addr, delivery_addr, carrier_id, price, status, strpie_product_id) " +
+            "VALUES (:userId, :orderTime, :estimatedPickTime, :estimatedDeliveryTime, :pickupAddr, :deliveryAddr, :carrierId, :price, :status, :stripeProductId)")
+    void insertNewOrder(Long userId, LocalDateTime orderTime, LocalDateTime estimatedPickTime, LocalDateTime estimatedDeliveryTime, String pickupAddr,
+                        String deliveryAddr, Long carrierId, Double price, OrderEntity.Status status, String stripeProductId);
+
+    @Query("SELECT id FROM orders WHERE user_id = :userId AND order_time = :orderTime")
+    Long getOrderIdByUserIdAndOrderTime(Long userId, LocalDateTime orderTime);
+
+    @Modifying
+    @Query("UPDATE orders SET status = :newStatus WHERE id = :orderId")
+    void updateStatus(Long orderId, OrderEntity.Status newStatus);
+
+    @Query("SELECT * FROM orders WHERE user_id = :userId ORDER BY order_time DESC")
+    List<OrderEntity> findByUserIdOrderByOrderTimeDesc(Long userId);
+>>>>>>> Stashed changes
 }
