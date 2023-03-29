@@ -1,5 +1,6 @@
 package com.laiex.backend.config;
 
+import com.google.maps.GeoApiContext;
 import com.stripe.Stripe;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -22,6 +23,7 @@ import javax.sql.DataSource;
 @Configuration
 public class AppConfig {
 
+    // read Stripe api key from application.yml
     @Value("${stripe.api-key}")
     private String stripeApiKey;
 
@@ -29,6 +31,21 @@ public class AppConfig {
     public void stripe() {
         Stripe.apiKey = stripeApiKey;
     }
+
+
+    // read Google Map key from application.yml
+    @Value("${googleMap.apiKey}")
+    private String googleMapApiKey;
+
+
+    @Bean
+    public GeoApiContext geoApiContext() {
+        return new GeoApiContext.Builder()
+                .apiKey(googleMapApiKey)
+                .build();
+    }
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
