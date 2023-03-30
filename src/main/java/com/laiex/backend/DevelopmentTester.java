@@ -5,10 +5,9 @@ import com.laiex.backend.db.OrderRepository;
 import com.laiex.backend.db.StationRepository;
 import com.laiex.backend.db.UserRepository;
 import com.laiex.backend.db.entity.CarrierEntity;
-import com.laiex.backend.service.GoogleService;
-import com.laiex.backend.service.OrderService;
-import com.laiex.backend.service.StripeService;
-import com.laiex.backend.service.UserService;
+import com.laiex.backend.model.PlanDetails;
+import com.laiex.backend.service.*;
+import com.stripe.model.Plan;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.boot.ApplicationArguments;
@@ -33,7 +32,11 @@ public class DevelopmentTester implements ApplicationRunner {
 
     private final GoogleService googleService;
 
-    public DevelopmentTester(UserRepository userRepository, CarrierRepository carrierRepository, StationRepository stationRepository, OrderRepository orderRepository, UserService userService, OrderService orderService, OrderService orderService1, StripeService stripeService, PasswordEncoder passwordEncoder, GoogleService googleService) {
+    private final FareService fareService;
+
+    private final SearchService searchService;
+
+    public DevelopmentTester(UserRepository userRepository, CarrierRepository carrierRepository, StationRepository stationRepository, OrderRepository orderRepository, UserService userService, OrderService orderService, OrderService orderService1, StripeService stripeService, PasswordEncoder passwordEncoder, GoogleService googleService, FareService fareService, SearchService searchService) {
         this.userRepository = userRepository;
         this.carrierRepository = carrierRepository;
         this.stationRepository = stationRepository;
@@ -43,6 +46,8 @@ public class DevelopmentTester implements ApplicationRunner {
         this.stripeService = stripeService;
         this.passwordEncoder = passwordEncoder;
         this.googleService = googleService;
+        this.fareService = fareService;
+        this.searchService = searchService;
     }
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -73,7 +78,7 @@ public class DevelopmentTester implements ApplicationRunner {
 //        orderRepository.save(order1);
 
         //register tester
-//        userService.register("abc@gmail.com", "123", "john","z",1231233213);
+        userService.register("abc@gmail.com", "123", "john","z","1231233213");
 
 
         // stripe product generator test
@@ -99,16 +104,33 @@ public class DevelopmentTester implements ApplicationRunner {
 //                "1600 Holloway Ave, San Francisco, CA 94132", "450 10th St, San Francisco, CA 94103",
 //                2L, 150.5, OrderEntity.status.ordered, productId1);
 
-        String orign = "1517 W 28th St, Los Angeles, CA 90007";
-        String destination = "651 W 35th St, Los Angeles, CA 90089";
-        System.out.println("The distance is " + googleService.calculateDistance(orign,destination));
-        System.out.println("The direction is " + googleService.getDirections(orign, destination).toString());
+//        String origin = "1517 W 28th St, Los Angeles, CA 90007";
+//        String destination = "651 W 35th St, Los Angeles, CA 90089";
+//        System.out.println("The distance is " + googleService.calculateDistance(orign,destination));
+//        System.out.println("The direction is " + googleService.getDirections(orign, destination).toString());
 
-
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
         // calculate straight distance
+//        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+
+        // Test FareService
+//        System.out.println("The estimated fare is " + fareService.computeFare(1400.0, 100.0, true));
+//        System.out.println("The estimated fare is " + fareService.computeFare(1400.0, 100.0, false));
+//        System.out.println("The estimated fare is " + fareService.computeFare(14000.0, 100.0, true));
+//        System.out.println("The estimated fare is " + fareService.computeFare(1400.0, 400.0, true));
+//        System.out.println("The estimated fare is " + fareService.computeFare(1400.0, 1000.0, true));
+
+        // Test SearchService
+//        PlanDetails planDetails = searchService.getPlanDetails(origin, destination, 100.0);
+//        PlanDetails uavPlanDetails = searchService.getUavPlanDetails(origin, destination, 200.0);
+//        System.out.println("The distance for ground carrier is " + planDetails.distance());
+//        System.out.println("The capacity for ground carrier is " + planDetails.capacity());
+//        System.out.println("The estimated fare for ground carrier is " + planDetails.price());
+//        System.out.println("The direction for ground carrier is " + searchService.getPlanRoute(origin, destination).toString());
+//
+//        System.out.println("The distance for UAV is " + uavPlanDetails.distance());
+//        System.out.println("The capacity for UAV is " + uavPlanDetails.capacity());
+//        System.out.println("The estimated fare for UAV is " + uavPlanDetails.price());
+
         System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
 
         // Mock Carrier entries
@@ -118,11 +140,7 @@ public class DevelopmentTester implements ApplicationRunner {
         CarrierEntity carrier2 = new CarrierEntity(null, "UAV", 0, 500, Integer.MAX_VALUE);
         carrierRepository.save(carrier2);
 
-
->>>>>>> Stashed changes
-=======
         // calculate straight distance
         System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
->>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
     }
 }
