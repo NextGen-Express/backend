@@ -19,9 +19,18 @@ public record OrderEntity(
         @JsonProperty("delivery_addr") String deliveryAddr,
         @JsonProperty("carrier_id") Long carrierId,
         Double price,
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+        Enum status
+=======
+        Status status,
+        @JsonProperty("strpie_product_id") String stripProductId
+>>>>>>> Stashed changes
+=======
         Enum status,
         @JsonProperty("strpie_product_id") String stripProductId
+>>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 ) {
-    public static enum status {ordered, pickup, delivered, reviewed};
+    public static enum Status {ordered, pickup, delivered, reviewed};
 }
 

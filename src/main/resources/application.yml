@@ -20,5 +20,4 @@ stripe:
   api-key: "sk_test_51Mcvu9EDk5elIuKZAkLIgDLuMgFHJ0Zgq2b8PLtzLeECr5O1c5oP6dPxJWmXrIA5bIpKtKTcr6AWz1Eal32nkVUn00YzbNbrfd"
 
 googleMap:
-  apiKey: "AIzaSyC9OOIuTs8ilGyf1GGSX9JYtBFq4Edirbc"
-
+  apiKey: "enter_your_own_api_key"

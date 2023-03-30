@@ -130,5 +130,17 @@ public class DevelopmentTester implements ApplicationRunner {
 //        System.out.println("The distance for UAV is " + uavPlanDetails.distance());
 //        System.out.println("The capacity for UAV is " + uavPlanDetails.capacity());
 //        System.out.println("The estimated fare for UAV is " + uavPlanDetails.price());
+
+        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+
+        // Mock Carrier entries
+        CarrierEntity carrier1 = new CarrierEntity(null, "RobotCar", 0, 1000, Integer.MAX_VALUE);
+        carrierRepository.save(carrier1);
+
+        CarrierEntity carrier2 = new CarrierEntity(null, "UAV", 0, 500, Integer.MAX_VALUE);
+        carrierRepository.save(carrier2);
+
+        // calculate straight distance
+        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
     }
 }

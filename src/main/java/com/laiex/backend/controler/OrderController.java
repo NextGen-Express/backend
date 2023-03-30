@@ -7,6 +7,7 @@ import com.laiex.backend.service.StripeService;
 import com.laiex.backend.service.UserService;
 import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+<<<<<<< HEAD
+// newly added unsure
+@RequestMapping("/orders")
+=======
 @RequestMapping("/home")
+>>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 public class OrderController {
     private final OrderService orderService;
     private final StripeService stripeService;
@@ -27,6 +33,7 @@ public class OrderController {
         this.stripeService = stripeService;
         this.userService = userService;
     }
+    
 
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
@@ -49,7 +56,15 @@ public class OrderController {
 
         Double price = bookRequestBody.price();
 
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+        OrderEntity.status status = bookRequestBody.status();
+=======
+        OrderEntity.Status status = OrderEntity.Status.ordered;
+>>>>>>> Stashed changes
+=======
         OrderEntity.status status = OrderEntity.status.ordered;
+>>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 
         // creat productId on Stripe
         String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
@@ -64,6 +79,24 @@ public class OrderController {
 
     }
 
+<<<<<<< HEAD
+    // newly added need comments
+    @GetMapping("/history")
+    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
+        Long userId = userService.findUserIdByUsername(user.getUsername());
+        return orderService.getOrderHistory(userId);
+<<<<<<< Updated upstream
+    }
+
+=======
+>>>>>>> Stashed changes
+    }
+
+    public ResponseEntity<List<OrderEntity>> getSortedOrders(@PathVariable Long userId) {
+        List<OrderEntity> sortedOrders = orderService.getSortedOrders(userId);
+        return ResponseEntity.ok(sortedOrders);
+    }
+=======
     @GetMapping("/history")
     public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
 
@@ -71,4 +104,5 @@ public class OrderController {
         return orderService.getOrderHistoryByUserId(userId);
     }
 
+>>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 }
