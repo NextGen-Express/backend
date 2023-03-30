@@ -15,6 +15,5 @@ public record BookRequestBody(
         @JsonProperty("carrier_id") Long carrierId,
         Double price,
         OrderEntity.OrderStatus status
-
 ) {
 }

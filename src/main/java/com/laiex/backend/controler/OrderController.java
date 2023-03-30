@@ -7,6 +7,7 @@ import com.laiex.backend.service.StripeService;
 import com.laiex.backend.service.UserService;
 import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,10 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+
+// newly added unsure
+//@RequestMapping("/orders")
 @RestController
 @RequestMapping("/home")
 public class OrderController {
@@ -27,6 +32,7 @@ public class OrderController {
         this.stripeService = stripeService;
         this.userService = userService;
     }
+    
 
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
@@ -51,6 +57,12 @@ public class OrderController {
 
         OrderEntity.OrderStatus status = OrderEntity.OrderStatus.ordered;
 
+        OrderEntity.status status = bookRequestBody.status();
+
+        OrderEntity.Status status = OrderEntity.Status.ordered;
+
+        OrderEntity.status status = OrderEntity.status.ordered;
+
         // creat productId on Stripe
         String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
         // attach price to above ride
@@ -62,6 +74,22 @@ public class OrderController {
 
         return new RedirectView(redirectUrl);
 
+    }
+
+    // newly added need comments
+    @GetMapping("/history")
+    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
+        Long userId = userService.findUserIdByUsername(user.getUsername());
+        return orderService.getOrderHistory(userId);
+
+    }
+
+
+    }
+
+    public ResponseEntity<List<OrderEntity>> getSortedOrders(@PathVariable Long userId) {
+        List<OrderEntity> sortedOrders = orderService.getSortedOrders(userId);
+        return ResponseEntity.ok(sortedOrders);
     }
 
     @GetMapping("/history")

@@ -4,12 +4,12 @@ import com.laiex.backend.db.entity.OrderEntity;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
-
+import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
-
 import java.time.LocalTime;
 import java.util.List;
 
+@Repository
 public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
     @Modifying
     @Query("INSERT INTO orders (user_id, order_time, estimated_pick_time, estimated_delivery_time, pickup_addr, delivery_addr, carrier_id, price, status, strpie_product_id) " +
@@ -29,4 +29,3 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
             "WHEN 'reviewed' THEN 4 ELSE 5 END ASC, order_time DESC")
     List<OrderEntity> findByUserIdNewestToOldest(Long userId);
 }
-
