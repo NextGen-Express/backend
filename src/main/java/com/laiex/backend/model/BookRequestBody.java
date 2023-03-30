@@ -14,7 +14,6 @@ public record BookRequestBody(
         @JsonProperty("delivery_addr") String deliveryAddr,
         @JsonProperty("carrier_id") Long carrierId,
         Double price,
-        OrderEntity.Status status
-
+        OrderEntity.OrderStatus status
 ) {
 }

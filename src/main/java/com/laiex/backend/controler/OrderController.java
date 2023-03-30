@@ -16,13 +16,12 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RestController
-<<<<<<< HEAD
+
+
 // newly added unsure
-@RequestMapping("/orders")
-=======
+//@RequestMapping("/orders")
+@RestController
 @RequestMapping("/home")
->>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 public class OrderController {
     private final OrderService orderService;
     private final StripeService stripeService;
@@ -56,15 +55,13 @@ public class OrderController {
 
         Double price = bookRequestBody.price();
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+        OrderEntity.OrderStatus status = OrderEntity.OrderStatus.ordered;
+
         OrderEntity.status status = bookRequestBody.status();
-=======
+
         OrderEntity.Status status = OrderEntity.Status.ordered;
->>>>>>> Stashed changes
-=======
+
         OrderEntity.status status = OrderEntity.status.ordered;
->>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 
         // creat productId on Stripe
         String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
@@ -73,36 +70,32 @@ public class OrderController {
         // store order to mySQL
         orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status, stripeProductId);
         // stripe checkout session
-        String redirectUrl = stripeService.stripOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
+        String redirectUrl = stripeService.stripeOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
 
         return new RedirectView(redirectUrl);
 
     }
 
-<<<<<<< HEAD
     // newly added need comments
     @GetMapping("/history")
     public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
         Long userId = userService.findUserIdByUsername(user.getUsername());
         return orderService.getOrderHistory(userId);
-<<<<<<< Updated upstream
+
     }
 
-=======
->>>>>>> Stashed changes
+
     }
 
     public ResponseEntity<List<OrderEntity>> getSortedOrders(@PathVariable Long userId) {
         List<OrderEntity> sortedOrders = orderService.getSortedOrders(userId);
         return ResponseEntity.ok(sortedOrders);
     }
-=======
-    @GetMapping("/history")
-    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
 
+    @GetMapping("/history")
+    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) throws Exception {
         Long userId = userService.findUserIdByUsername(user.getUsername());
         return orderService.getOrderHistoryByUserId(userId);
     }
 
->>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 }

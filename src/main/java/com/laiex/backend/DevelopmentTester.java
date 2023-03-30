@@ -5,6 +5,12 @@ import com.laiex.backend.db.OrderRepository;
 import com.laiex.backend.db.StationRepository;
 import com.laiex.backend.db.UserRepository;
 import com.laiex.backend.db.entity.CarrierEntity;
+import com.laiex.backend.db.entity.OrderEntity;
+import com.laiex.backend.db.entity.UserEntity;
+import com.laiex.backend.service.GoogleService;
+import com.laiex.backend.service.OrderService;
+import com.laiex.backend.service.StripeService;
+import com.laiex.backend.service.UserService;
 import com.laiex.backend.model.PlanDetails;
 import com.laiex.backend.service.*;
 import com.stripe.model.Plan;
@@ -14,6 +20,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Component
@@ -51,7 +62,7 @@ public class DevelopmentTester implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        // UserEntity test
+        // UserEntity test
 //        UserEntity user1 = new UserEntity(null,"test@gmail.com", "123","john", "z",1231233213);
 //        userRepository.save(user1);
 //
@@ -59,9 +70,9 @@ public class DevelopmentTester implements ApplicationRunner {
 //        userRepository.save(user2);
 //
         // CarrierEntity test
-//        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
-//        carrierRepository.save(carrier1);
-////
+        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
+        carrierRepository.save(carrier1);
+
 //        CarrierEntity carrier2 = new CarrierEntity(null, CarrierEntity.CarrierType.UAV, 0, 500, Integer.MAX_VALUE);
 //        carrierRepository.save(carrier2);
 
@@ -86,14 +97,14 @@ public class DevelopmentTester implements ApplicationRunner {
 //        System.out.println("Product id is " + productId1);
 //        String priceId1 = stripeService.attachPriceToProductId(10549, productId1);
 //        System.out.println("Price id is " + priceId1);
-//        stripeService.stripOrderGenerator(productId1, priceId1, 50000);
+//        stripeService.stripeOrderGenerator(productId1, priceId1, 50000);
 //        System.out.println("Checkout session is succeed!");
 //
 //        orderService.placeOrder(1L, LocalDateTime.parse("2023-03-24 10:30:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-//                LocalDateTime.parse("2023-03-24 10:30:10",DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+//                LocalDateTime.parse("2023-03-24 10:30:10", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
 //                LocalDateTime.parse("2023-03-24 10:30:15",DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
 //                "1600 Holloway Ave, San Francisco, CA 94132",
-//                "450 10th St, San Francisco, CA 94103", 1L, 150.5, OrderEntity.status.ordered, productId1);
+//                "450 10th St, San Francisco, CA 94103", 1L, 150.5, OrderEntity.OrderStatus.ordered, productId1);
 //
 //        String productId2 = stripeService.createRide(1 + "" + LocalTime.now());
 //        stripeService.attachPriceToProductId(10549, productId2);
@@ -104,6 +115,17 @@ public class DevelopmentTester implements ApplicationRunner {
 //                "1600 Holloway Ave, San Francisco, CA 94132", "450 10th St, San Francisco, CA 94103",
 //                2L, 150.5, OrderEntity.status.ordered, productId1);
 
+//        String orign = "1517 W 28th St, Los Angeles, CA 90007";
+//        String destination = "651 W 35th St, Los Angeles, CA 90089";
+//        System.out.println("The distance is " + googleService.calculateDistance(orign,destination));
+//        System.out.println("The direction is " + googleService.getDirections(orign, destination).toString());
+//
+//
+//        // calculate straight distance
+//        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+        //test for history
+//        List<OrderEntity> re = orderRepository.findByUserIdNewestToOldest(1L);
+//        System.out.println("I finished ---------------");
 //        String origin = "1517 W 28th St, Los Angeles, CA 90007";
 //        String destination = "651 W 35th St, Los Angeles, CA 90089";
 //        System.out.println("The distance is " + googleService.calculateDistance(orign,destination));
@@ -140,7 +162,5 @@ public class DevelopmentTester implements ApplicationRunner {
         CarrierEntity carrier2 = new CarrierEntity(null, "UAV", 0, 500, Integer.MAX_VALUE);
         carrierRepository.save(carrier2);
 
-        // calculate straight distance
-        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
     }
 }
