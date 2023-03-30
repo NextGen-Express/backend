@@ -23,7 +23,7 @@ public class OrderService{
     }
 
     public void placeOrder(long userId, LocalDateTime orderTime, LocalDateTime estimatedPickTime, LocalDateTime estimatedDeliveryTime,
-                           String pickupAddr, String deliveryAddr, long carrierId, double price, OrderEntity.status status,
+                           String pickupAddr, String deliveryAddr, long carrierId, double price, OrderEntity.OrderStatus status,
                            String stripeProductId) throws InterruptedException {
         orderRepository.insertNewOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status,stripeProductId);
         Long orderId = orderRepository.getOrderIdByUserIdAndOrderTime(userId, orderTime);

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 public class StripeService {
-    public String stripOrderGenerator(String productId, String priceId, Integer price) throws StripeException {
+    public String stripeOrderGenerator(String productId, String priceId, Integer price) throws StripeException {
         List<Object> lineItems = new ArrayList<>();
         Map<String, Object> lineItem = new HashMap<>();
         lineItem.put("price", priceId);

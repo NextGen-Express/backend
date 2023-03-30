@@ -24,7 +24,7 @@ public class GoogleService {
                 = DistanceMatrixApi.getDistanceMatrix(geoApiContext, origins, destinations)
                 .mode(TravelMode.DRIVING)
                 .language("en-US")
-                .units(Unit.METRIC);
+                .units(Unit.IMPERIAL);
         DistanceMatrix matrix = distanceMatrixApiRequest.await();
         DistanceMatrixElement[] elements = matrix.rows[0].elements;
         Distance distance = elements[0].distance;
@@ -32,11 +32,14 @@ public class GoogleService {
         return distance.inMeters;
     }
 
+    // get
     public DirectionsRoute getDirections(String origin, String destination) throws IOException, InterruptedException, ApiException {
         DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext)
                 .origin(origin)
                 .destination(destination)
-                .mode(TravelMode.DRIVING);
+                .mode(TravelMode.DRIVING)
+                .language("en-US")
+                .units(Unit.IMPERIAL);
         return request.await().routes[0];
     }
 
@@ -58,9 +61,10 @@ public class GoogleService {
         return R * c;
     }
 
-    // get straight line of two addresses - this can only be done by frontend
+    // return straight-line polyline given two addresses
 
 
+    // helper method to get LatLng from address
     private LatLng getLatLng(String addr) throws Exception {
         GeocodingResult[] results = GeocodingApi.geocode(geoApiContext, addr).await();
         if (results == null || results.length == 0) {
@@ -68,5 +72,6 @@ public class GoogleService {
         }
         return results[0].geometry.location;
     }
+
 
 }
