@@ -104,8 +104,8 @@ public class DevelopmentTester implements ApplicationRunner {
 //                "1600 Holloway Ave, San Francisco, CA 94132", "450 10th St, San Francisco, CA 94103",
 //                2L, 150.5, OrderEntity.status.ordered, productId1);
 
-//        String origin = "1517 W 28th St, Los Angeles, CA 90007";
-//        String destination = "651 W 35th St, Los Angeles, CA 90089";
+        String origin = "1517 W 28th St, Los Angeles, CA 90007";
+        String destination = "651 W 35th St, Los Angeles, CA 90089";
 //        System.out.println("The distance is " + googleService.calculateDistance(orign,destination));
 //        System.out.println("The direction is " + googleService.getDirections(orign, destination).toString());
 
@@ -131,7 +131,7 @@ public class DevelopmentTester implements ApplicationRunner {
 //        System.out.println("The capacity for UAV is " + uavPlanDetails.capacity());
 //        System.out.println("The estimated fare for UAV is " + uavPlanDetails.price());
 
-        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(origin, destination));
 
         // Mock Carrier entries
         CarrierEntity carrier1 = new CarrierEntity(null, "RobotCar", 0, 1000, Integer.MAX_VALUE);
@@ -141,6 +141,6 @@ public class DevelopmentTester implements ApplicationRunner {
         carrierRepository.save(carrier2);
 
         // calculate straight distance
-        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(origin, destination));
     }
 }
