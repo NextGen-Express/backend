@@ -28,7 +28,7 @@ public class OrderController {
         this.stripeService = stripeService;
         this.userService = userService;
     }
-    
+
 
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
@@ -51,7 +51,7 @@ public class OrderController {
 
         Double price = bookRequestBody.price();
 
-        OrderEntity.Status status = OrderEntity.Status.ordered;
+        OrderEntity.OrderStatus status = OrderEntity.OrderStatus.ordered;
 
         // creat productId on Stripe
         String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
@@ -60,7 +60,7 @@ public class OrderController {
         // store order to mySQL
         orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status, stripeProductId);
         // stripe checkout session
-        String redirectUrl = stripeService.stripOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
+        String redirectUrl = stripeService.stripeOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
 
         return new RedirectView(redirectUrl);
 

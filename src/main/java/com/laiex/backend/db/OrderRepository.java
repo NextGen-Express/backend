@@ -14,19 +14,19 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
-    
+
     @Modifying
     @Query("INSERT INTO orders (user_id, order_time, estimated_pick_time, estimated_delivery_time, pickup_addr, delivery_addr, carrier_id, price, status, strpie_product_id) " +
             "VALUES (:userId, :orderTime, :estimatedPickTime, :estimatedDeliveryTime, :pickupAddr, :deliveryAddr, :carrierId, :price, :status, :stripeProductId)")
     void insertNewOrder(Long userId, LocalDateTime orderTime, LocalDateTime estimatedPickTime, LocalDateTime estimatedDeliveryTime, String pickupAddr,
-                        String deliveryAddr, Long carrierId, Double price, OrderEntity.Status status, String stripeProductId);
+                        String deliveryAddr, Long carrierId, Double price, OrderEntity.OrderStatus status, String stripeProductId);
 
     @Query("SELECT id FROM orders WHERE user_id = :userId AND order_time = :orderTime")
     Long getOrderIdByUserIdAndOrderTime(Long userId, LocalDateTime orderTime);
 
     @Modifying
     @Query("UPDATE orders SET status = :newStatus WHERE id = :orderId")
-    void updateStatus(Long orderId, OrderEntity.Status newStatus);
+    void updateStatus(Long orderId, OrderEntity.OrderStatus newStatus);
 
     @Query("SELECT * FROM orders WHERE user_id = :userId ORDER BY order_time DESC")
     List<OrderEntity> findByUserIdOrderByOrderTimeDesc(Long userId);
