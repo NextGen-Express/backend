@@ -29,28 +29,11 @@ public record CarrierEntity(
         return repository.save(this);
     }
 
-//    public enum CarrierType {
-//        RobotCar, UAV;
-//
-//        public static CarrierType fromString(String method) {
-//            if (method.equalsIgnoreCase("RobotCar")) {
-//                return CarrierType.RobotCar;
-//            } else if (method.equalsIgnoreCase("UAV")) {
-//                return CarrierType.UAV;
-//            } else {
-//                throw new IllegalArgumentException("Invalid shipping method: " + method);
-//            }
-//        }
-//    }
-
-
     public static CarrierEntity carrierGenerator(CarrierRepository carrierRepository, CarrierType carrierType, Double weight) {
         double capacity = carrierType == CarrierType.RobotCar ? 1000.0 : 200.0;
         carrierRepository.insertNewCarrier(carrierType, weight, capacity, Integer.MAX_VALUE);
         long id = carrierRepository.getId();
         return new CarrierEntity(id, carrierType, weight, capacity - weight, Integer.MAX_VALUE);
     }
-
-
 
 }

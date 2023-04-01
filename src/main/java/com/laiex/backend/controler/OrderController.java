@@ -35,7 +35,7 @@ public class OrderController {
     public RedirectView book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
         Long userId = userService.findUserIdByUsername(user.getUsername());
-        //System.out.println("user id is " + userId);
+
         LocalDateTime orderTime = bookRequestBody.orderTime();
 
         LocalDateTime estimatedPickTime = bookRequestBody.estimatedPickTime();

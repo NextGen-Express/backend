@@ -20,7 +20,7 @@ public record OrderEntity(
         @JsonProperty("carrier_id") Long carrierId,
         Double price,
         OrderStatus status,
-        @JsonProperty("strpie_product_id") String stripProductId
+        @JsonProperty("stripe_product_id") String stripProductId
 ) {
     public enum OrderStatus {ordered, pickup, delivered, reviewed};
 }

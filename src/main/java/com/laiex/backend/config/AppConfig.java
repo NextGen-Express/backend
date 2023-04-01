@@ -55,11 +55,9 @@ public class AppConfig {
         Stripe.apiKey = stripeApiKey;
     }
 
-
     // read Google Map key from application.yml
     @Value("${googleMap.apiKey}")
     private String googleMapApiKey;
-
 
     @Bean
     public GeoApiContext geoApiContext() {
@@ -67,8 +65,6 @@ public class AppConfig {
                 .apiKey(googleMapApiKey)
                 .build();
     }
-
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -102,8 +98,5 @@ public class AppConfig {
     PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
-
-
 
 }

@@ -28,7 +28,6 @@ public class StripeService {
         params.put("currency", "usd");
         params.put("success_url","https://example.com/success");
         Session session = Session.create(params);
-        //System.out.println(session.getUrl());
         return session.getUrl();
 
     }

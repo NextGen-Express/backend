@@ -30,33 +30,4 @@ public class SearchController {
         }
     }
 
-//    @GetMapping("/ground")
-//    public PlanDetails getGroundPlanDetails(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws IOException, InterruptedException, ApiException {
-//        try {
-//            return searchService.getPlanDetails(searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.capacity());
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            return null;
-//        }
-//    }
-//
-//    @GetMapping("/uav_direction")
-//    public PlanDetails getUavPlanDetails(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws Exception {
-//        try {
-//            return searchService.getUavPlanDetails(searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.capacity());
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            return null;
-//        }
-//    }
-//
-//    @GetMapping("/car_direction")
-//    public DirectionsRoute getGroundRoute(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws IOException, InterruptedException, ApiException {
-//        try {
-//            return searchService.getPlanRoute(searchRequestBody.origin(), searchRequestBody.destination());
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            return null;
-//        }
-//    }
 }

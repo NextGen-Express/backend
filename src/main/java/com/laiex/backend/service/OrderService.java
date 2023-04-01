@@ -22,8 +22,7 @@ public class OrderService{
                            String pickupAddr, String deliveryAddr, long carrierId, double price, OrderEntity.OrderStatus status,
                            String stripeProductId) throws InterruptedException {
         orderRepository.insertNewOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status,stripeProductId);
-        Long orderId = orderRepository.getOrderIdByUserIdAndOrderTime(userId, orderTime);
-        //System.out.println(orderId + " has been ordered");
+        orderRepository.getOrderIdByUserIdAndOrderTime(userId, orderTime);
     }
 
     // user checks his/her order history

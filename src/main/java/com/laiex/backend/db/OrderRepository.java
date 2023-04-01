@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends ListCrudRepository<OrderEntity, Long> {
     @Modifying
-    @Query("INSERT INTO orders (user_id, order_time, estimated_pick_time, estimated_delivery_time, pickup_addr, delivery_addr, carrier_id, price, status, strpie_product_id) " +
+    @Query("INSERT INTO orders (user_id, order_time, estimated_pick_time, estimated_delivery_time, pickup_addr, delivery_addr, carrier_id, price, status, stripe_product_id) " +
             "VALUES (:userId, :orderTime, :estimatedPickTime, :estimatedDeliveryTime, :pickupAddr, :deliveryAddr, :carrierId, :price, :status, :stripeProductId)")
     void insertNewOrder(Long userId, LocalDateTime orderTime, LocalDateTime estimatedPickTime, LocalDateTime estimatedDeliveryTime, String pickupAddr,
                         String deliveryAddr, Long carrierId, Double price, OrderEntity.OrderStatus status, String stripeProductId);
