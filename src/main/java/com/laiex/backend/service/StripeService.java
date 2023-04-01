@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Service
 public class StripeService {
+    // Generate Stripe Order
     public String stripeOrderGenerator(String productId, String priceId, Integer price) throws StripeException {
         List<Object> lineItems = new ArrayList<>();
         Map<String, Object> lineItem = new HashMap<>();
@@ -27,11 +28,12 @@ public class StripeService {
         params.put("currency", "usd");
         params.put("success_url","https://example.com/success");
         Session session = Session.create(params);
-        System.out.println(session.getUrl());
+        //System.out.println(session.getUrl());
         return session.getUrl();
 
     }
 
+    // create a new product
     public String createRide(String rideName) {
         Map<String, Object> params = new HashMap<>();
         params.put("name", rideName);
@@ -39,13 +41,13 @@ public class StripeService {
         try{
             product = Product.create(params);
         } catch (Exception e) {
-            System.out.println("Your ride was not successfully!");
+            System.out.println(e.getMessage());
         }
         return product.getId();
 
     }
 
-
+    // attach price to new created product
     public String attachPriceToProductId(int cost, String productId) {
         Map<String, Object> params = new HashMap<>();
         params.put("unit_amount", cost);

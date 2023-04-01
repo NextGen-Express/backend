@@ -1,7 +1,10 @@
 package com.laiex.backend.config;
 
 import com.google.maps.GeoApiContext;
+import com.laiex.backend.db.StationRepository;
+import com.laiex.backend.db.entity.StationEntity;
 import com.stripe.Stripe;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +20,35 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 public class AppConfig {
+    private final StationRepository stationRepository;
 
     // read Stripe api key from application.yml
     @Value("${stripe.api-key}")
     private String stripeApiKey;
+    private static List<StationEntity> stationList;
+    public AppConfig(StationRepository stationRepository) {
+        this.stationRepository = stationRepository;
+    }
+
+    @PostConstruct
+    public void init() {
+        // create three default stations
+        stationRepository.insertStation("San Francisco", "236 W Portal Ave, San Francisco, CA 94127", 37.73874747540093, -122.4683741639298, StationEntity.status.available);
+        stationRepository.insertStation("San Francisco", "3145 Geary Blvd, San Francisco, CA 94118", 37.787047187280024, -122.45343392870515, StationEntity.status.available);
+        stationRepository.insertStation("San Francisco", "1198 S Van Ness Ave, San Francisco, CA 94110", 37.75872860740814, -122.41489106937792, StationEntity.status.available);
+        stationList = stationRepository.findAll();
+    }
+
+    public static List<StationEntity> getStationList() {
+        return stationList;
+    }
 
     @Bean
     public void stripe() {
@@ -79,5 +102,8 @@ public class AppConfig {
     PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
+
+
 
 }

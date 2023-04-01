@@ -8,30 +8,49 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("carriers")
 public record CarrierEntity(
         @Id Long id,
-        @JsonProperty("shipping_method") Enum shippingMethod,
-        Integer burden,
-        Integer capacity,
+        @JsonProperty("shipping_method") CarrierType type,
+        Double burden,
+        Double capacity,
         Integer battery
 ) {
-    public CarrierEntity(Long id, String shippingMethod, Integer burden, Integer capacity, Integer battery) {
-        this(id, CarrierType.fromString(shippingMethod), burden, capacity, battery);
+    public enum CarrierType {
+        RobotCar, UAV;
+    }
+
+    public CarrierEntity(Long id, CarrierType type, Double burden, Double capacity, Integer battery) {
+        this.id = id;
+        this.type = type;
+        this.burden = burden;
+        this.capacity = capacity;
+        this.battery = battery;
     }
 
     public CarrierEntity save(CarrierRepository repository) {
         return repository.save(this);
     }
 
-    public enum CarrierType {
-        RobotCar, UAV;
+//    public enum CarrierType {
+//        RobotCar, UAV;
+//
+//        public static CarrierType fromString(String method) {
+//            if (method.equalsIgnoreCase("RobotCar")) {
+//                return CarrierType.RobotCar;
+//            } else if (method.equalsIgnoreCase("UAV")) {
+//                return CarrierType.UAV;
+//            } else {
+//                throw new IllegalArgumentException("Invalid shipping method: " + method);
+//            }
+//        }
+//    }
 
-        public static CarrierType fromString(String method) {
-            if (method.equalsIgnoreCase("RobotCar")) {
-                return CarrierType.RobotCar;
-            } else if (method.equalsIgnoreCase("UAV")) {
-                return CarrierType.UAV;
-            } else {
-                throw new IllegalArgumentException("Invalid shipping method: " + method);
-            }
-        }
+
+    public static CarrierEntity carrierGenerator(CarrierRepository carrierRepository, CarrierType carrierType, Double weight) {
+        double capacity = carrierType == CarrierType.RobotCar ? 1000.0 : 200.0;
+        carrierRepository.insertNewCarrier(carrierType, weight, capacity, Integer.MAX_VALUE);
+        long id = carrierRepository.getId();
+        return new CarrierEntity(id, carrierType, weight, capacity - weight, Integer.MAX_VALUE);
     }
+
+
+
 }

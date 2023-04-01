@@ -39,18 +39,8 @@ public class UserService {
         userRepository.fillOutInfoByUsername(username, firstName, lastName, phoneNumber);
     }
 
-<<<<<<< HEAD
     // newly added need comments
-=======
->>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
     public Long findUserIdByUsername(String username) {
-        UserEntity user = userRepository.findByUsername(username);
-        return user.getId();
+        return userRepository.findIdByUsername(username);
     }
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 5801ecdd4e2f07842093c8b7c62b326c78ffb95a
 }
