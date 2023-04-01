@@ -56,5 +56,5 @@ CREATE TABLE orders
     FOREIGN KEY (carrier_id) REFERENCES carriers(id) ON DELETE CASCADE,
     price DOUBLE NOT NULL ,
     status ENUM('ordered', 'pickup', 'delivered', 'reviewed') NOT NULL,
-    strpie_product_id VARCHAR(100)
+    stripe_product_id VARCHAR(100)
 );

@@ -26,7 +26,6 @@ public class RoutePlanning {
         try {
             // get the closest station
             StationEntity station = StationEntity.getClosestStation(googleService, origin);
-            System.out.println("The station picked is " + station.address());
 
             // get the plan details
             PlanDetails groundPlan = searchService.getPlanDetails(station, CarrierEntity.CarrierType.RobotCar,origin, destination, weight);
@@ -37,6 +36,4 @@ public class RoutePlanning {
             return null;
         }
     }
-
-    //
 }
