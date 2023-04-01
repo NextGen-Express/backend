@@ -1,13 +1,13 @@
 package com.laiex.backend.controler;
 
 import com.laiex.backend.db.entity.OrderEntity;
-import com.laiex.backend.model.BookRequestBody;
+import com.laiex.backend.model.requestbody.BookRequestBody;
+import com.laiex.backend.model.responsebody.HistoryOrderBody;
 import com.laiex.backend.service.OrderService;
-import com.laiex.backend.service.StripeService;
+import com.laiex.backend.service.outside.StripeService;
 import com.laiex.backend.service.UserService;
 import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-
-// newly added unsure
-//@RequestMapping("/orders")
 @RestController
 @RequestMapping("/home")
 public class OrderController {
@@ -33,14 +29,13 @@ public class OrderController {
         this.userService = userService;
     }
     
-
+    // book order
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
     public RedirectView book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
-        System.out.println("I'm booking new order");
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
         Long userId = userService.findUserIdByUsername(user.getUsername());
-        System.out.println("user id is " + userId);
+        //System.out.println("user id is " + userId);
         LocalDateTime orderTime = bookRequestBody.orderTime();
 
         LocalDateTime estimatedPickTime = bookRequestBody.estimatedPickTime();
@@ -57,12 +52,6 @@ public class OrderController {
 
         OrderEntity.OrderStatus status = OrderEntity.OrderStatus.ordered;
 
-        OrderEntity.status status = bookRequestBody.status();
-
-        OrderEntity.Status status = OrderEntity.Status.ordered;
-
-        OrderEntity.status status = OrderEntity.status.ordered;
-
         // creat productId on Stripe
         String stripeProductId = stripeService.createRide(userId + "" + orderTime.toString());
         // attach price to above ride
@@ -76,24 +65,9 @@ public class OrderController {
 
     }
 
-    // newly added need comments
+    // get order history
     @GetMapping("/history")
-    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) {
-        Long userId = userService.findUserIdByUsername(user.getUsername());
-        return orderService.getOrderHistory(userId);
-
-    }
-
-
-    }
-
-    public ResponseEntity<List<OrderEntity>> getSortedOrders(@PathVariable Long userId) {
-        List<OrderEntity> sortedOrders = orderService.getSortedOrders(userId);
-        return ResponseEntity.ok(sortedOrders);
-    }
-
-    @GetMapping("/history")
-    public List<OrderEntity> getOrderHistory(@AuthenticationPrincipal User user) throws Exception {
+    public List<HistoryOrderBody> getOrderHistory(@AuthenticationPrincipal User user) throws Exception {
         Long userId = userService.findUserIdByUsername(user.getUsername());
         return orderService.getOrderHistoryByUserId(userId);
     }

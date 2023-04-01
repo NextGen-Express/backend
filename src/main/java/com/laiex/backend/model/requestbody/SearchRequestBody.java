@@ -1,8 +1,8 @@
-package com.laiex.backend.model;
+package com.laiex.backend.model.requestbody;
 
 public record SearchRequestBody(
         String origin,
         String destination,
-        Double capacity
+        Double weight
 ) {
 }

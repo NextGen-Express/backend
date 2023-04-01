@@ -1,4 +1,4 @@
-package com.laiex.backend.service;
+package com.laiex.backend.service.outside;
 
 import com.google.maps.*;
 import com.google.maps.DistanceMatrixApi;
@@ -16,8 +16,8 @@ public class GoogleService {
         this. geoApiContext = geoApiContext;
     }
 
-    // calculate distance between two addresses
-    public double calculateDistance(String origin, String destination) throws IOException, InterruptedException, ApiException {
+    // calculate driving distance between two addresses
+    public double[] calculateCarDistance(String origin, String destination) throws IOException, InterruptedException, ApiException {
         String[] origins = new String[]{origin};
         String[] destinations = new String[]{destination};
         DistanceMatrixApiRequest distanceMatrixApiRequest
@@ -27,24 +27,11 @@ public class GoogleService {
                 .units(Unit.IMPERIAL);
         DistanceMatrix matrix = distanceMatrixApiRequest.await();
         DistanceMatrixElement[] elements = matrix.rows[0].elements;
-        Distance distance = elements[0].distance;
-
-        return distance.inMeters;
-    }
-
-    // get
-    public DirectionsRoute getDirections(String origin, String destination) throws IOException, InterruptedException, ApiException {
-        DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext)
-                .origin(origin)
-                .destination(destination)
-                .mode(TravelMode.DRIVING)
-                .language("en-US")
-                .units(Unit.IMPERIAL);
-        return request.await().routes[0];
+        return new double[]{elements[0].distance.inMeters, elements[0].duration.inSeconds};
     }
 
     // get straight-line distance
-    public double calculateStraightDistance(String origin, String destination) throws Exception {
+    public double[] calculateUAVDistance(String origin, String destination) throws Exception {
         LatLng originLatLng = getLatLng(origin);
         LatLng destinationLatLng = getLatLng(destination);
         int R = 6371000; // Earth radius in meters
@@ -57,12 +44,26 @@ public class GoogleService {
                 Math.cos(lat1) * Math.cos(lat2) *
                         Math.sin(deltaLng/2) * Math.sin(deltaLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-        return R * c;
+        return new double[]{R * c, R * c / 10.0};
     }
 
-    // return straight-line polyline given two addresses
+    // get driving route between two addresses
+    public DirectionsRoute getCarDirections(String origin, String destination) throws IOException, InterruptedException, ApiException {
+        DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext)
+                .origin(origin)
+                .destination(destination)
+                .mode(TravelMode.DRIVING)
+                .language("en-US")
+                .units(Unit.IMPERIAL);
+        return request.await().routes[0];
+    }
 
+    // get UAV route between addresses
+    public LatLng[] getUAVDirections(String origin, String destination) throws Exception {
+        LatLng originLatLng = getLatLng(origin);
+        LatLng destinationLatLng = getLatLng(destination);
+        return new LatLng[]{originLatLng, destinationLatLng};
+    }
 
     // helper method to get LatLng from address
     private LatLng getLatLng(String addr) throws Exception {
@@ -72,6 +73,4 @@ public class GoogleService {
         }
         return results[0].geometry.location;
     }
-
-
 }

@@ -1,30 +1,22 @@
 package com.laiex.backend;
 
+import com.laiex.backend.algorithms.FareService;
 import com.laiex.backend.db.CarrierRepository;
 import com.laiex.backend.db.OrderRepository;
 import com.laiex.backend.db.StationRepository;
 import com.laiex.backend.db.UserRepository;
 import com.laiex.backend.db.entity.CarrierEntity;
-import com.laiex.backend.db.entity.OrderEntity;
-import com.laiex.backend.db.entity.UserEntity;
-import com.laiex.backend.service.GoogleService;
+import com.laiex.backend.service.outside.GoogleService;
 import com.laiex.backend.service.OrderService;
-import com.laiex.backend.service.StripeService;
+import com.laiex.backend.service.outside.StripeService;
 import com.laiex.backend.service.UserService;
-import com.laiex.backend.model.PlanDetails;
 import com.laiex.backend.service.*;
-import com.stripe.model.Plan;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 
 @Component
@@ -70,8 +62,8 @@ public class DevelopmentTester implements ApplicationRunner {
 //        userRepository.save(user2);
 //
         // CarrierEntity test
-        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 0, 1000, Integer.MAX_VALUE);
-        carrierRepository.save(carrier1);
+//        CarrierEntity carrier1 = new CarrierEntity(null, CarrierEntity.CarrierType.RobotCar, 50.0, 1000.0, Integer.MAX_VALUE);
+//        carrierRepository.save(carrier1);
 
 //        CarrierEntity carrier2 = new CarrierEntity(null, CarrierEntity.CarrierType.UAV, 0, 500, Integer.MAX_VALUE);
 //        carrierRepository.save(carrier2);
@@ -89,7 +81,7 @@ public class DevelopmentTester implements ApplicationRunner {
 //        orderRepository.save(order1);
 
         //register tester
-        userService.register("abc@gmail.com", "123", "john","z","1231233213");
+        //userService.register("abc@gmail.com", "123", "john","z","1231233213");
 
 
         // stripe product generator test
@@ -153,14 +145,72 @@ public class DevelopmentTester implements ApplicationRunner {
 //        System.out.println("The capacity for UAV is " + uavPlanDetails.capacity());
 //        System.out.println("The estimated fare for UAV is " + uavPlanDetails.price());
 
-        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+//        System.out.println("The straight line distance is " + googleService.calculateStraightDistance(orign, destination));
+//
+//        // Mock Carrier entries
+//        CarrierEntity carrier1 = new CarrierEntity(null, "RobotCar", 0, 1000, Integer.MAX_VALUE);
+//        carrierRepository.save(carrier1);
+//
+//        CarrierEntity carrier2 = new CarrierEntity(null, "UAV", 0, 500, Integer.MAX_VALUE);
+//        carrierRepository.save(carrier2);
 
-        // Mock Carrier entries
-        CarrierEntity carrier1 = new CarrierEntity(null, "RobotCar", 0, 1000, Integer.MAX_VALUE);
-        carrierRepository.save(carrier1);
 
-        CarrierEntity carrier2 = new CarrierEntity(null, "UAV", 0, 500, Integer.MAX_VALUE);
-        carrierRepository.save(carrier2);
+        // RoutePlanning test
+//        PlanDetails grond = searchService.getPlanDetails(station, CarrierEntity.CarrierType.RobotCar,"1517 W 28th St, Los Angeles, CA 90007", "651 W 35th St, Los Angeles, CA 90089", 25.0);
+//        PlanDetails air = searchService.getPlanDetails(station, CarrierEntity.CarrierType.UAV,"1517 W 28th St, Los Angeles, CA 90007", "651 W 35th St, Los Angeles, CA 90089", 25.0);
+//        List<PlanDetails> re = new ArrayList<>();
+//        re.add(grond);
+//        re.add(air);
+//
+//        RoutePlanning routePlanning = new RoutePlanning(searchService, "1517 W 28th St, Los Angeles, CA 90007", "651 W 35th St, Los Angeles, CA 90089", 25.0);
+//        SearchResponse re1 = routePlanning.getPlanDetails();
+//        System.out.println("I'm good");
+
+        // fare test
+//        CarrierEntity.CarrierType carrierType1 = CarrierEntity.CarrierType.RobotCar;
+//        CarrierEntity.CarrierType carrierType2 = CarrierEntity.CarrierType.UAV;
+//        double distance = 16000;
+//        double weight = 5;
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 5.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 5.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 10.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 10.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 20.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 20.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 40.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 40.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 60.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 60.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 80.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 80.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 100.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 100.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 120.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 120.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 140.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 140.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 160.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 160.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 180.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 180.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 200.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 200.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 300.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 300.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 400.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 400.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 500.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 500.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 600.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 600.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 700.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 700.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 800.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 800.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 900.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 900.0));
+//        System.out.println("The robocar fare is " + fareService.computeFare(carrierType1, distance, 1000.0));
+//        System.out.println("The uav fare is " + fareService.computeFare(carrierType2, distance, 1000.0));
 
     }
 }

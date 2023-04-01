@@ -37,8 +37,8 @@ CREATE TABLE carriers
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     shipping_method ENUM('RobotCar', 'UAV') NOT NULL,
-    burden INT NOT NULL,
-    capacity INT NOT NULL,
+    burden DOUBLE NOT NULL,
+    capacity DOUBLE NOT NULL,
     battery INT
 );
 

@@ -1,23 +1,13 @@
 package com.laiex.backend.service;
 
 import com.laiex.backend.db.OrderRepository;
-import com.laiex.backend.db.UserRepository;
 import com.laiex.backend.db.entity.OrderEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
+import com.laiex.backend.model.responsebody.HistoryOrderBody;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.Comparator;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class OrderService{
@@ -27,37 +17,26 @@ public class OrderService{
         this.orderRepository = orderRepository;
     }
 
-    //newly added unsure
-    public List<OrderEntity> getOrderHistory(Long userId) {
-        // return orderRepository.findByUserId(userId);
-        return orderRepository.findByUserIdNewestToOldest(userId);
-    }  
-
+    // user place order, and the order will be inserted into the database, redirect user to the Stripe payment url
     public void placeOrder(long userId, LocalDateTime orderTime, LocalDateTime estimatedPickTime, LocalDateTime estimatedDeliveryTime,
                            String pickupAddr, String deliveryAddr, long carrierId, double price, OrderEntity.OrderStatus status,
                            String stripeProductId) throws InterruptedException {
         orderRepository.insertNewOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status,stripeProductId);
         Long orderId = orderRepository.getOrderIdByUserIdAndOrderTime(userId, orderTime);
-        System.out.println(orderId + " has been ordered");
-
+        //System.out.println(orderId + " has been ordered");
     }
 
-    public List<OrderEntity> getOrderHistoryByUserId(Long userId) {
-        return orderRepository.findByUserIdNewestToOldest(userId);
+    // user checks his/her order history
+    public List<HistoryOrderBody> getOrderHistoryByUserId(Long userId) {
+        List<OrderEntity> orders = orderRepository.findByUserIdNewestToOldest(userId);
+        List<HistoryOrderBody> orderReponse = new ArrayList<>();
+        for (OrderEntity order : orders) {
+            orderReponse.add(new HistoryOrderBody(order.id(), order.orderTime(),
+                    order.estimatedPickTime(), order.estimatedDeliveryTime(),
+                    order.pickupAddr(), order.deliveryAddr(), order.carrierId(),
+                    order.price(), order.status()));
+        }
+        return orderReponse;
     }
 
-
-    }
-
-    public List<OrderEntity> getOrderHistory(Long userId) {
-        return orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
-    }
-
-    public List<OrderEntity> getSortedOrders(Long userId) {
-        List<OrderEntity> orders = orderRepository.findByUserIdOrderByOrderTimeDesc(userId);
-        return orders.stream()
-                .sorted(Comparator.comparing(OrderEntity::status)
-                        .thenComparing(OrderEntity::orderTime).reversed())
-                .collect(Collectors.toList());
-    }
 }

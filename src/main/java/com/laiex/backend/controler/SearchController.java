@@ -1,53 +1,62 @@
 package com.laiex.backend.controler;
 
-import com.google.maps.errors.ApiException;
-import com.google.maps.model.DirectionsRoute;
-import com.laiex.backend.model.PlanDetails;
-import com.laiex.backend.model.SearchRequestBody;
+import com.laiex.backend.algorithms.RoutePlanning;
+import com.laiex.backend.model.requestbody.SearchRequestBody;
+import com.laiex.backend.model.responsebody.SearchResponse;
+import com.laiex.backend.service.outside.GoogleService;
 import com.laiex.backend.service.SearchService;
-import com.stripe.model.Plan;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/home")
 public class SearchController {
     private final SearchService searchService;
+    private final GoogleService googleService;
 
-    public SearchController(SearchService searchService) {
+    public SearchController(SearchService searchService, GoogleService googleService) {
         this.searchService = searchService;
+        this.googleService = googleService;
     }
 
-    @GetMapping("/ground")
-    public PlanDetails getGroundPlanDetails(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws IOException, InterruptedException, ApiException {
+    // get plan result
+    @GetMapping("/search")
+    public SearchResponse getPlanDetails(@RequestBody SearchRequestBody searchRequestBody){
         try {
-            return searchService.getPlanDetails(searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.capacity());
+            RoutePlanning routePlanning = new RoutePlanning(searchService, googleService, searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.weight());
+            return routePlanning.getPlanDetails();
         } catch (Exception e) {
-            throw e;
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
-    @GetMapping("/uav")
-    public PlanDetails getUavPlanDetails(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws Exception {
-        try {
-            return searchService.getUavPlanDetails(searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.capacity());
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    @GetMapping("/direction")
-    public DirectionsRoute getGroundRoute(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws IOException, InterruptedException, ApiException {
-        try {
-            return searchService.getPlanRoute(searchRequestBody.origin(), searchRequestBody.destination());
-        } catch (Exception e) {
-            throw e;
-        }
-    }
+//    @GetMapping("/ground")
+//    public PlanDetails getGroundPlanDetails(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws IOException, InterruptedException, ApiException {
+//        try {
+//            return searchService.getPlanDetails(searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.capacity());
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
+//
+//    @GetMapping("/uav_direction")
+//    public PlanDetails getUavPlanDetails(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws Exception {
+//        try {
+//            return searchService.getUavPlanDetails(searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.capacity());
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
+//
+//    @GetMapping("/car_direction")
+//    public DirectionsRoute getGroundRoute(@AuthenticationPrincipal User user, @RequestBody SearchRequestBody searchRequestBody) throws IOException, InterruptedException, ApiException {
+//        try {
+//            return searchService.getPlanRoute(searchRequestBody.origin(), searchRequestBody.destination());
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
 }

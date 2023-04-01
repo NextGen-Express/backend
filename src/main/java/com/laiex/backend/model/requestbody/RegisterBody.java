@@ -1,4 +1,4 @@
-package com.laiex.backend.model;
+package com.laiex.backend.model.requestbody;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
