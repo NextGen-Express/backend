@@ -4,7 +4,7 @@ import com.laiex.backend.db.entity.OrderEntity;
 import com.laiex.backend.model.requestbody.BookRequestBody;
 import com.laiex.backend.model.responsebody.HistoryOrderBody;
 import com.laiex.backend.service.OrderService;
-import com.laiex.backend.service.StripeService;
+import com.laiex.backend.service.outside.StripeService;
 import com.laiex.backend.service.UserService;
 import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.laiex.backend.service;
+package com.laiex.backend.service.outside;
 
 import com.google.maps.*;
 import com.google.maps.DistanceMatrixApi;

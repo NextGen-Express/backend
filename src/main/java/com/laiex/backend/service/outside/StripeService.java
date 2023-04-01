@@ -1,4 +1,4 @@
-package com.laiex.backend.service;
+package com.laiex.backend.service.outside;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.Price;

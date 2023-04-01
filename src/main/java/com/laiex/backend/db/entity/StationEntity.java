@@ -1,6 +1,6 @@
 package com.laiex.backend.db.entity;
 import com.laiex.backend.config.AppConfig;
-import com.laiex.backend.service.GoogleService;
+import com.laiex.backend.service.outside.GoogleService;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -15,21 +15,19 @@ public record StationEntity(
         Double longitude,
         String status
 ) {
-    public static Object[] getClosestStation(GoogleService googleService, String origin) throws Exception {
+    public static StationEntity getClosestStation(GoogleService googleService, String origin) throws Exception {
 
         StationEntity target = null;
         double distance = Double.MAX_VALUE;
-        double time = Integer.MAX_VALUE;
         List<StationEntity> stations = AppConfig.getStationList();
         for(StationEntity station : stations) {
             double[] tempDistanceAndTime = googleService.calculateUAVDistance(station.address, origin);
             if(tempDistanceAndTime[0] < distance) {
                 target = station;
                 distance = tempDistanceAndTime[0];
-                time = tempDistanceAndTime[1];
             }
         }
-        return new Object[]{target,distance, time};
+        return target;
     }
 
     public enum status { available, unavailable};

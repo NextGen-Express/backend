@@ -1,14 +1,11 @@
 package com.laiex.backend.controler;
 
-import com.google.maps.errors.ApiException;
 import com.laiex.backend.algorithms.RoutePlanning;
 import com.laiex.backend.model.requestbody.SearchRequestBody;
 import com.laiex.backend.model.responsebody.SearchResponse;
-import com.laiex.backend.service.GoogleService;
+import com.laiex.backend.service.outside.GoogleService;
 import com.laiex.backend.service.SearchService;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/home")
@@ -23,8 +20,7 @@ public class SearchController {
 
     // get plan result
     @GetMapping("/search")
-    public SearchResponse getPlanDetails(@RequestBody SearchRequestBody searchRequestBody) throws IOException, InterruptedException, ApiException {
-        //System.out.println("I can get the search request body");
+    public SearchResponse getPlanDetails(@RequestBody SearchRequestBody searchRequestBody){
         try {
             RoutePlanning routePlanning = new RoutePlanning(searchService, googleService, searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.weight());
             return routePlanning.getPlanDetails();
