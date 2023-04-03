@@ -26,7 +26,7 @@ public class StripeService {
         params.put("line_items", lineItems);
         params.put("mode", "payment");
         params.put("currency", "usd");
-        params.put("success_url","https://example.com/success");
+        params.put("success_url","https://github.com/FLAG-LaiEx");
         Session session = Session.create(params);
         return session.getUrl();
 

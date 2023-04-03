@@ -36,7 +36,7 @@ public class OrderController {
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
         Long userId = userService.findUserIdByUsername(user.getUsername());
 
-        LocalDateTime orderTime = bookRequestBody.orderTime();
+        LocalDateTime orderTime = LocalDateTime.now();
 
         LocalDateTime estimatedPickTime = bookRequestBody.estimatedPickTime();
 
@@ -60,7 +60,7 @@ public class OrderController {
         orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status, stripeProductId);
         // stripe checkout session
         String redirectUrl = stripeService.stripeOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
-
+        System.out.println(redirectUrl);
         return new RedirectView(redirectUrl);
 
     }
