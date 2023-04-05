@@ -19,7 +19,7 @@ public class SearchController {
     }
 
     // get plan result
-    @GetMapping("/search")
+    @PostMapping("/search")
     public SearchResponse getPlanDetails(@RequestBody SearchRequestBody searchRequestBody){
         try {
             RoutePlanning routePlanning = new RoutePlanning(searchService, googleService, searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.weight());
