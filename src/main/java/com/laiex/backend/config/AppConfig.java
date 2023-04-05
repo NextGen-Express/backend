@@ -84,6 +84,7 @@ public class AppConfig {
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
                 .and()
                 .logout()
+                .invalidateHttpSession(true)
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT));
 
         return http.build();
