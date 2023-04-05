@@ -17,4 +17,6 @@ public interface UserRepository extends ListCrudRepository<UserEntity, Long> {
     @Query("SELECT id FROM users WHERE username = :username")
     Long findIdByUsername(String username);
 
+    @Query("SELECT EXISTS(SELECT 1 FROM users WHERE username = :username)")
+    boolean existsByUsername(String username);
 }
