@@ -51,6 +51,6 @@ public class SearchService {
         // calculate route
         DirectionsRoute route = carrierType == CarrierEntity.CarrierType.RobotCar ?
                 googleService.getCarDirections(origin, destination) : null;
-        return new PlanDetails(carrier.id(), carrierType, distance, weight, estimatedPickTime, estimatedDeliveryTime, fare, route);
+        return new PlanDetails(carrier.id(), carrierType, origin, destination, distance, weight, estimatedPickTime, estimatedDeliveryTime, fare, route);
     }
 }

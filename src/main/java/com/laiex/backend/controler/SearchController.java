@@ -23,6 +23,9 @@ public class SearchController {
     public SearchResponse getPlanDetails(@RequestBody SearchRequestBody searchRequestBody){
         try {
             RoutePlanning routePlanning = new RoutePlanning(searchService, googleService, searchRequestBody.origin(), searchRequestBody.destination(), searchRequestBody.weight());
+            System.out.println(
+                    routePlanning.getPlanDetails().toString()
+            );
             return routePlanning.getPlanDetails();
         } catch (Exception e) {
             System.out.println(e.getMessage());

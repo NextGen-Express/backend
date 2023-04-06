@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 public record PlanDetails(
         Long carrierId,
         CarrierEntity.CarrierType carrierType,
+        String origin,
+        String destionation,
         Double distance,
         Double weight,
         LocalDateTime estimatedPickTime,
