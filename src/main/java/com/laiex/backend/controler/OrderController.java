@@ -15,9 +15,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/home")
+@RequestMapping("")
 public class OrderController {
     private final OrderService orderService;
     private final StripeService stripeService;
@@ -32,7 +33,7 @@ public class OrderController {
     // book order
     @PostMapping("/book")
     @ResponseStatus(value = HttpStatus.OK)
-    public RedirectView book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
+    public Map<String,String> book(@AuthenticationPrincipal User user, @RequestBody BookRequestBody bookRequestBody) throws StripeException, InterruptedException {
         // can we get userid directly from frontend? If not, I need to look up userid based on user.getUserName() and look up from db
         Long userId = userService.findUserIdByUsername(user.getUsername());
 
@@ -59,10 +60,9 @@ public class OrderController {
         // store order to mySQL
         orderService.placeOrder(userId, orderTime, estimatedPickTime, estimatedDeliveryTime, pickupAddr, deliveryAddr, carrierId, price, status, stripeProductId);
         // stripe checkout session
-        String redirectUrl = stripeService.stripeOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
-        System.out.println(redirectUrl);
-        return new RedirectView(redirectUrl);
-
+        String url = stripeService.stripeOrderGenerator(stripeProductId, stripePriceId, (int)(price * 100));
+        System.out.println("url is created： " + url);
+        return Map.of("url", url);
     }
 
     // get order history
