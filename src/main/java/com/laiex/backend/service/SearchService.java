@@ -25,6 +25,9 @@ public class SearchService {
     }
 
     public PlanDetails getPlanDetails(StationEntity station, CarrierEntity.CarrierType carrierType, String origin, String destination, Double weight) throws Exception {
+        // get station address
+        String stationAddress = station.address();
+
         // get carrier instance if capacity is enough
         CarrierEntity carrier = Dispatcher.dispatch(carrierRepository, carrierType, weight);
 
@@ -48,9 +51,9 @@ public class SearchService {
         // calculate fare
         Double fare = fareService.computeFare(carrierType, distance, weight);
 
-        // calculate route
-        DirectionsRoute route = carrierType == CarrierEntity.CarrierType.RobotCar ?
-                googleService.getCarDirections(origin, destination) : null;
-        return new PlanDetails(carrier.id(), carrierType, origin, destination, distance, weight, estimatedPickTime, estimatedDeliveryTime, fare, route);
+//        // calculate route
+//        DirectionsRoute route = carrierType == CarrierEntity.CarrierType.RobotCar ?
+//                googleService.getCarDirections(origin, destination) : null;
+        return new PlanDetails(stationAddress, carrier.id(), carrierType, origin, destination, distance, weight, estimatedPickTime, estimatedDeliveryTime, fare);
     }
 }
