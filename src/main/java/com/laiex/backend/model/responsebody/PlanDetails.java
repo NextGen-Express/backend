@@ -5,7 +5,7 @@ import com.laiex.backend.db.entity.CarrierEntity;
 import java.time.LocalDateTime;
 
 public record PlanDetails(
-        Long carrierId,
+        String stationAddress, Long carrierId,
         CarrierEntity.CarrierType carrierType,
         String origin,
         String destionation,
@@ -13,6 +13,5 @@ public record PlanDetails(
         Double weight,
         LocalDateTime estimatedPickTime,
         LocalDateTime estimatedDeliveryTime,
-        Double price,
-        com.google.maps.model.DirectionsRoute route) {
+        Double price) {
 }
